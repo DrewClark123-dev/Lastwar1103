@@ -38,7 +38,7 @@ def render_selection_boxes(col):
     if st.session_state.goldustmetric_choice == 'Current':
         if 'goldust_alliances' not in st.session_state:
             # This wont work if OCR reads alliance names wrong...
-            st.session_state.goldust_alliances = ['OLDs','KOUS','DHCM','ASHH','NatA','BytL','SHT1','baek']
+            st.session_state.goldust_alliances = ['OLDs','KOUS','SiNS','ASHH','NatA','Bytl','SHT1','baek']
         goldust_alliances = sel1.multiselect(
             "Select multiple alliances",
             options=st.session_state.s3alliances,
@@ -97,9 +97,9 @@ def print_timeline_chart(col):
     combined_data = []
     for alliance in st.session_state.goldust_alliances:
         if database == 'mySQL':
-            alliance_query = "select * from s3goldust where alliance = %s order by alliance asc"    
+            alliance_query = "select * from s3goldust where alliance = %s order by date asc"    
         else:
-            alliance_query = f"select * from s3goldust where alliance = ? order by alliance asc" # sqlite
+            alliance_query = f"select * from s3goldust where alliance = ? order by date asc" # sqlite
         
         alliance_df = db.query_df(conn, alliance_query, [alliance])
         alliance_df.columns = ['date', 'warzone', 'alliance', 'goldust']
