@@ -74,7 +74,7 @@ def render_selection_boxes(col):
         return metrictype_dropdown, selected_servers
     elif st.session_state.herometric_choice == 'Alliance':
         if 'selected_alliances' not in st.session_state:
-            st.session_state.selected_alliances = ['OLDS','KOUS','DHCM','ASHH','NatA','Bytl','SHT1']
+            st.session_state.selected_alliances = ['OLDS','KOUS','SiNS','ASHH','NatA','Bytl','SHT1']
         selected_alliances = sel1.multiselect(
             "Select multiple alliances",
             options=st.session_state.alliances,
