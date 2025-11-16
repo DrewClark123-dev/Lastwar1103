@@ -32,6 +32,7 @@ def get_sheet_data():
     header_row = worksheet.row_values(1)  # Get the first row which is assumed to be the header
     rawdata = worksheet.get_all_records(expected_headers=header_row)
     data = pd.DataFrame(rawdata)
+    data = data.fillna("").astype(str) # Fix serialization issue
     return data
 
 if __name__ == "__main__":
@@ -57,7 +58,7 @@ if __name__ == "__main__":
             st.session_state.response_df = get_sheet_data()
         st.subheader("Transfer Applications")
         st.write("")
-        st.dataframe(st.session_state.response_df)
+        st.dataframe(st.session_state.response_df, height=700)
         
     if st.session_state.incorrect_pass == True:
         st.markdown('<p style="color:red;">Password Incorrect</p>', unsafe_allow_html=True)
