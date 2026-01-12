@@ -33,7 +33,11 @@ def get_selection_data():
         st.session_state.alliances = alliance_df.iloc[:, 0].tolist()
         print("[INFO] Pulled alliances from Database")
     if 'groupingdates' not in st.session_state:
-        date_query = "select distinct date from totalhero order by date desc"
+        #date_query = "select distinct date from totalhero order by date desc"
+        if database == 'mySQL':
+            date_query = "select distinct date from totalhero where date != 'NaN' order by STR_TO_DATE(date, '%m/%d/%y') desc"
+        else:
+            date_query = "select distinct date from totalhero where date != 'NaN' order by substr(date, 7, 2) || '-' || substr(date, 1, 2) || '-' || substr(date, 4, 2) desc"
         date_df = db.query_df(conn, date_query)
         st.session_state.groupingdates = date_df.iloc[:, 0].tolist()
         print("[INFO] Pulled dates from Database")
@@ -66,7 +70,7 @@ def render_selection_boxes(col):
     )
     if st.session_state.herometric_choice == 'Server':
         if 'selected_servers' not in st.session_state:
-            st.session_state.selected_servers = [1103,1104]
+            st.session_state.selected_servers = [1103,1064,1086,1090,1093,1094,1112,1116]
         selected_servers = sel1.multiselect(
             "Select multiple servers",
             options=st.session_state.servers,
@@ -97,9 +101,7 @@ def render_selection_boxes(col):
             on_change=on_alliances_change
         )
         if 'grouping_date' not in st.session_state:
-            date_query = "select max(date) from totalhero"
-            date_df = db.query_df(conn, date_query)
-            st.session_state.grouping_date =  date_df.iloc[0, 0]   # first row, first column
+            st.session_state.grouping_date = st.session_state.groupingdates[0]
         grouping_date = sel3.selectbox(
             "Date",
             options=st.session_state.groupingdates,
@@ -183,7 +185,7 @@ def print_server_chart(col, metric):
         ).interactive()
 
     server_chart = server_line + server_points
-    col.altair_chart(server_chart, use_container_width=True)
+    col.altair_chart(server_chart, width='stretch')
     return False
 
 def print_alliance_chart(col, metric):
@@ -226,14 +228,14 @@ def print_alliance_chart(col, metric):
     ).interactive()
 
     server_chart = server_line + server_points
-    col.altair_chart(server_chart, use_container_width=True)
+    col.altair_chart(server_chart, width='stretch')
     return False
 
 if __name__ == "__main__":
     print("==================================================")
     st.sidebar.title("Navigation")
     st.sidebar.markdown("Select a page from the sidebar to navigate.")
-    st.set_page_config(layout="wide", page_title="1103 Season 3")
+    st.set_page_config(layout="wide", page_title="Lastwar AI")
     st.markdown("<h1 style='text-align: center; color: #3ea6ff; '>OLDs Lastwar Dashboard</h1>", unsafe_allow_html=True)
     st.write("")
     conn = db.create_connection(database)
