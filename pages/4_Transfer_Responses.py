@@ -54,11 +54,13 @@ if __name__ == "__main__":
         pass1.button("Submit", on_click=on_submit_pass, args=(pw_check,))
 
     if st.session_state.logged_in:
-        if "response_df" not in st.session_state:
-            st.session_state.response_df = get_sheet_data()
-        st.subheader("Transfer Applications")
-        st.write("")
-        st.dataframe(st.session_state.response_df, height=700)
+        st.success("Logged in successfully")
+        # if "response_df" not in st.session_state:
+        #     st.session_state.response_df = get_sheet_data()
+        # st.subheader("Transfer Applications")
+        # st.write("")
+        # st.dataframe(st.session_state.response_df, height=700)
+
         
     if st.session_state.incorrect_pass == True:
         st.markdown('<p style="color:red;">Password Incorrect</p>', unsafe_allow_html=True)
