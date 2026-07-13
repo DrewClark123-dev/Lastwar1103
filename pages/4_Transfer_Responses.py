@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 
 # Callbacks for updates
 def on_submit_pass(check):
@@ -18,7 +18,7 @@ def get_worksheet():
     creds_dict = dict(st.secrets["gcp_service_account"])
     # Set up the credentials using your service account
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+    creds = Credentials.from_service_account_info(creds_dict, scope)
     # Authenticate and create a client to interact with Google Sheets
     client = gspread.authorize(creds)
     sheet_id = "1Tg0NrNN5GgH_KUbt_DwSepdsE21Gm1Q6RXtLdpd3x9Q"
@@ -48,18 +48,17 @@ if __name__ == "__main__":
         st.session_state.incorrect_pass = False
 
     # # Login if needed
-    # if not st.session_state.logged_in:
-    pass1, space1 = st.columns([1, 2])
-    pw_check = pass1.text_input("Enter your password:")
-    pass1.button("Submit", on_click=on_submit_pass, args=(pw_check,))
+    if not st.session_state.logged_in:
+        pass1, space1 = st.columns([1, 2])
+        pw_check = pass1.text_input("Enter your password:")
+        pass1.button("Submit", on_click=on_submit_pass, args=(pw_check,))
 
     if st.session_state.logged_in:
-        st.success("Logged in successfully")
-        # if "response_df" not in st.session_state:
-        #     st.session_state.response_df = get_sheet_data()
-        # st.subheader("Transfer Applications")
-        # st.write("")
-        # st.dataframe(st.session_state.response_df, height=700)
+        if "response_df" not in st.session_state:
+            st.session_state.response_df = get_sheet_data()
+        st.subheader("Transfer Applications")
+        st.write("")
+        st.dataframe(st.session_state.response_df, height=700)
 
         
     if st.session_state.incorrect_pass == True:
