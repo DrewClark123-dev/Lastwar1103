@@ -18,7 +18,7 @@ def get_worksheet():
     creds_dict = dict(st.secrets["gcp_service_account"])
     # Set up the credentials using your service account
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = Credentials.from_service_account_info(creds_dict, scope=scope)
+    creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
     # Authenticate and create a client to interact with Google Sheets
     client = gspread.authorize(creds)
     sheet_id = "1Tg0NrNN5GgH_KUbt_DwSepdsE21Gm1Q6RXtLdpd3x9Q"
