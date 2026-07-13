@@ -47,11 +47,11 @@ if __name__ == "__main__":
     if "incorrect_pass" not in st.session_state:
         st.session_state.incorrect_pass = False
 
-    # Login if needed
-    if not st.session_state.logged_in:
-        pass1, space1 = st.columns([1, 2])
-        pw_check = pass1.text_input("Enter your password:")
-        pass1.button("Submit", on_click=on_submit_pass, args=(pw_check,))
+    # # Login if needed
+    # if not st.session_state.logged_in:
+    pass1, space1 = st.columns([1, 2])
+    pw_check = pass1.text_input("Enter your password:")
+    pass1.button("Submit", on_click=on_submit_pass, args=(pw_check,))
 
     if st.session_state.logged_in:
         st.success("Logged in successfully")
