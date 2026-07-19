@@ -10,4 +10,4 @@ if __name__ == "__main__":
 
     # Embed Google Form
     google_form_url = "https://docs.google.com/forms/d/1_wwa4JF6zvGEqHrW8aQI7duA-dUAP_Zf_UHjBDwBc7A/viewform?embedded=true"
-    st.iframe(google_form_url, height=2100)
+    st.components.v1.iframe(google_form_url, height=2100, scrolling=False)
